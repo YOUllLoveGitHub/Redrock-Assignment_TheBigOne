@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+         version="3.1">
+    <servlet>
+        <servlet-name>signin</servlet-name>
+        <servlet-class>servlet.SignIn</servlet-class>
+        <init-param>
+            <param-name>character</param-name>
+            <param-value>GBK</param-value>
+        </init-param>
+    </servlet>
+    <servlet>
+        <servlet-name>register</servlet-name>
+        <servlet-class>servlet.Register</servlet-class>
+        <init-param>
+            <param-name>character</param-name>
+            <param-value>GBK</param-value>
+        </init-param>
+    </servlet>
+    <servlet>
+        <servlet-name>check</servlet-name>
+        <servlet-class>servlet.Check</servlet-class>
+        <init-param>
+            <param-name>character</param-name>
+            <param-value>GBK</param-value>
+        </init-param>
+    </servlet>
+    <!--<filter>-->
+        <!--<filter-name>is_login</filter-name>-->
+        <!--<filter-class>filter.TestFilter</filter-class>-->
+    <!--</filter>-->
+
+    <servlet-mapping>
+        <servlet-name>signin</servlet-name>
+        <url-pattern>/signin</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>register</servlet-name>
+        <url-pattern>/register</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>check</servlet-name>
+        <url-pattern>/check</url-pattern>
+    </servlet-mapping>
+    <!--<filter-mapping>-->
+        <!--<filter-name>is_login</filter-name>-->
+        <!--<url-pattern>/register</url-pattern>-->
+    <!--</filter-mapping>-->
+</web-app>

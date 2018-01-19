@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="../css/signin.css">
+    <title>登入</title>
+    <script type="text/javascript">
+    </script>
+</head>
+
+<body>
+    <img id="logo" src="../images/logo.png">
+    <img id="text_img" src="../images/slogan.png">
+    <div id="container">
+        <div id="msg_box">
+            <div class="sign_in_box add_event">
+                <div class="block">
+                    <form action="../signin" method="POST" onsubmit="return check(this)" id="in">
+                        <div class="text-box">
+                            <input type="text" name="name" id="signin_name" placeholder="账号">
+                        </div>
+                        <div class="text-box">
+                            <input type="password" id="signin_psw" name="password" placeholder="密码">
+                        </div>
+                        <div class="code_container">
+                            <div class="text-box  inline_b">
+                                <input type="text" name="test_code" class="test_code" autocomplete = "off" placeholder="验证码">
+                            </div>
+                            <div class="code_box inline_b" id="code_01">
+                            </div>
+                        </div>
+                        <input class="go_button" type="submit" value="登入" name="go">
+                    </form>
+                    <p class="sign_tip"><a id="go_up">还没有账号?点此注册</a></p>
+                </div>
+            </div>
+            <div class="sign_up_box add_event">
+                <div class="block">
+                    <form action="../register" method="POST" onsubmit="return check(this)" id="up">
+                        <div class="text-box">
+                            <input type="text" id="signup_name" name="name" placeholder="账号">
+                        </div>
+                        <div class="text-box">
+                            <input type="password" name="password" placeholder="密码">
+                        </div>
+                        <div class="code_container">
+                            <div class="text-box  inline_b">
+                                <input type="text" name="test_code" class="test_code" autocomplete = "off" placeholder="验证码">
+                            </div>
+                            <div class="code_box inline_b" id="code_02">
+                            </div>
+                        </div>
+                        <input class="go_button" type="submit" value="注册" name="go">
+                    </form>
+                    <p class="sign_tip"><a id="go_in">已有账号?点此登入</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+    var up_ok = false;
+    var in_ok = false;
+    var now_code_01;
+    var now_code_02;
+
+    function check(f) {
+        var msg_p = document.querySelector("#msg");
+        if(msg_p !== null){
+            msg_p.style.display = "none";
+        }
+        var nodes = document.querySelectorAll("form div input");
+        var node_01, node_02;
+        var flag;
+        if (f.id == "in") {
+            node_01 = nodes[0];
+            node_02 = nodes[1];
+            flag = 1;
+        } else {
+            node_01 = nodes[3];
+            node_02 = nodes[4];
+            flag = 2;
+        }
+        if (node_01.value == "" || node_02.value == "") {
+            print_msg("请输入完整信息!", 0)
+            return false;
+        }
+        if (flag == 1) {
+            if(f.querySelector(".test_code").value.toUpperCase() != now_code_01){ 
+                print_msg("验证码错误!", 0);
+                return false;
+            }
+            is_right();
+            if (in_ok == true) return true;
+            return false;
+        } else {
+            if(f.querySelector(".test_code").value.toUpperCase() != now_code_02){
+                print_msg("验证码错误!", 0);
+                return false;
+            }
+            if (up_ok == true) return true;
+            return false;
+        }
+        return true;
+    }
+
+    function print_msg(msg, col) {
+        var msg_p = document.querySelector("#msg");
+        if (msg_p == null) {
+            var d = document.createElement("div");
+            d.style.position = "absolute";
+            d.style.top = "184px";
+            d.style.textAlign = "center";
+            d.style.width = "100%";
+
+            var p = document.createElement("p");
+            p.style.fontSize = "12px";
+            p.style.color = "indianred";
+            if (col == 1) p.style.color = "seagreen";
+            p.id = "msg";
+
+            var text_node = document.createTextNode(msg);
+            p.appendChild(text_node);
+            d.appendChild(p);
+
+            var node = document.querySelector("#msg_box");
+            node.appendChild(d);
+        } else {
+            msg_p.style.display = "block";
+            if (col == 1) msg_p.style.color = "seagreen";
+            else msg_p.style.color = "indianred";
+            msg_p.innerText = msg;
+        }
+    }
+
+    function is_repeat() {
+        var node = document.querySelector("#signup_name");
+        if (node.value == "") return;
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4 && xhr.status == 200 || xhr.status == 304) {
+                if (xhr.responseText == "ok") {
+                    print_msg("该用户名可用!", 1);
+                    up_ok = true;
+                } else {
+                    print_msg("该用户名已被占用!", 0);
+                    up_ok = false;
+                }
+            }
+        }
+        xhr.open("POST", "../check", true);
+        var data = "name=" + node.value;
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.send(data);
+    }
+
+    function is_right() {
+        var name_box = document.querySelector("#signin_name");
+        var psw_box = document.querySelector("#signin_psw");
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4 && xhr.status == 200 || xhr.status == 304) {
+                if (xhr.responseText == "ok") {
+                    console.log(xhr.responseText);
+                    // print_msg("登入成功!", 1);
+                    in_ok = true;
+                } else {
+                    print_msg("用户名不存在或密码错误!", 0);
+                    in_ok = false;
+                }
+            }
+        }
+        xhr.open("POST", "../signin", true);
+        var data = "name=" + name_box.value + "&" + "password=" + psw_box.value;
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.send(data);
+    }
+
+    function change_sign(event) {
+        var sign = document.querySelectorAll(".add_event");
+        if (event.target.id == "go_up") {
+            sign[1].style.display = "block";
+            sign[0].style.display = "none";
+        } else {
+            sign[0].style.display = "block";
+            sign[1].style.display = "none";
+        }
+        var nodes = document.querySelectorAll("form div input");
+        nodes.forEach(function(node) {
+            node.value = "";
+        });
+        var msg_p = document.querySelector("#msg");
+        if(msg_p !== null){
+            msg_p.style.display = "none";
+        }
+    }
+
+    function change_code(event) {
+        var code =  get_code(4,36);
+        event.target.innerText = code;
+        event.target.style.color = "#" + get_code(6,16);
+        event.target.style.background = "#" + get_code(6,16);
+        // console.log(event.target);
+        if(event.target.id=="code_01"){
+            now_code_01 = code;
+        }
+        else{
+            now_code_02 = code;
+        }
+    }
+
+    function get_code(length,limit) {
+        var chars = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+        var code = "";
+        for (var i = 0; i < length; i++)
+            code += chars[Math.floor(Math.random() * limit)];
+        return code;
+    }
+
+    function addEvent() {
+        var node = document.querySelectorAll(".sign_tip");
+        var ipt = document.querySelector("#signup_name");
+        var btn = document.querySelectorAll(".go_button");
+        var codes = document.querySelectorAll(".code_box");
+        node[0].addEventListener("click", change_sign, false);
+        node[1].addEventListener("click", change_sign, false);
+        ipt.addEventListener("blur", is_repeat, false);
+        btn[0].addEventListener("submit", check, false);
+        btn[1].addEventListener("submit", check, false);
+        btn[1].addEventListener("submit", is_repeat, false);
+        codes[0].addEventListener("click", change_code, false);
+        codes[1].addEventListener("click", change_code, false);
+        codes[0].click();
+        codes[1].click();   
+    }
+    window.onload = addEvent;
+    </script>
+</body>
+
+</html>
