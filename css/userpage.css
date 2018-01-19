@@ -10,6 +10,13 @@ a{
 	text-decoration: none;
 }
 
+html{
+    height: 100%;
+}
+
+body{
+    background: #F4F5F6;
+}
 
 .f_l{
 	float: left;
@@ -194,10 +201,15 @@ main{
     height: 100%;
 }
 
+#info_box{
+    margin-bottom: 20px;
+}
+
 #user_info{
     padding: 16px 0 0 134px;
     position: relative;
     min-height: 84px;
+    background: white;
 }
 
 #user_info > ul{
@@ -234,4 +246,47 @@ main{
     padding: 0;
     border-radius: 6px;
     cursor: pointer;
+}
+
+#comm_box{
+    width: 100%;
+}
+
+#comm_nav{
+    background-color: white;
+    height: 46px;
+    border-bottom: 2px solid #E8E8E8;
+    line-height: 46px;
+    font-size: 19px;
+    font-weight: 100;
+}
+
+#comm_nav > span{
+    margin-left: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid palevioletred;
+}
+
+.comm_li{
+    padding: 10px 20px;
+    margin-top: 10px;
+    border-bottom: 2px solid #E8E8E8;
+    background-color: white;
+}
+
+.comm_li_cont{
+    font-size: 30px;
+    font-weight: 900;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: unset;
+}
+
+.com_new{
+    font-size: 12px;
+    color: gray;
+}
+
+.comm_li_container{
+    border-bottom: 1px solid lightgray;
 }

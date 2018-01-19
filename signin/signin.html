@@ -60,7 +60,6 @@
     </div>
     <script type="text/javascript">
     var up_ok = false;
-    var in_ok = false;
     var now_code_01;
     var now_code_02;
 
@@ -90,9 +89,7 @@
                 print_msg("验证码错误!", 0);
                 return false;
             }
-            is_right();
-            if (in_ok == true) return true;
-            return false;
+            return true;
         } else {
             if(f.querySelector(".test_code").value.toUpperCase() != now_code_02){
                 print_msg("验证码错误!", 0);
@@ -154,27 +151,27 @@
         xhr.send(data);
     }
 
-    function is_right() {
-        var name_box = document.querySelector("#signin_name");
-        var psw_box = document.querySelector("#signin_psw");
-        var xhr = new XMLHttpRequest();
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState == 4 && xhr.status == 200 || xhr.status == 304) {
-                if (xhr.responseText == "ok") {
-                    console.log(xhr.responseText);
-                    // print_msg("登入成功!", 1);
-                    in_ok = true;
-                } else {
-                    print_msg("用户名不存在或密码错误!", 0);
-                    in_ok = false;
-                }
-            }
-        }
-        xhr.open("POST", "../signin", true);
-        var data = "name=" + name_box.value + "&" + "password=" + psw_box.value;
-        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        xhr.send(data);
-    }
+    // function is_right() {
+    //     var name_box = document.querySelector("#signin_name");
+    //     var psw_box = document.querySelector("#signin_psw");
+    //     var xhr = new XMLHttpRequest();
+    //     xhr.onreadystatechange = function() {
+    //         if (xhr.readyState == 4 && xhr.status == 200 || xhr.status == 304) {
+    //             if (xhr.responseText == "ok") {
+    //                 console.log(xhr.responseText);
+    //                 // print_msg("登入成功!", 1);
+    //                 in_ok = true;
+    //             } else {
+    //                 print_msg("用户名不存在或密码错误!", 0);
+    //                 in_ok = false;
+    //             }
+    //         }
+    //     }
+    //     xhr.open("POST", "../signin", true);
+    //     var data = "name=" + name_box.value + "&" + "password=" + psw_box.value;
+    //     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    //     xhr.send(data);
+    // }
 
     function change_sign(event) {
         var sign = document.querySelectorAll(".add_event");
